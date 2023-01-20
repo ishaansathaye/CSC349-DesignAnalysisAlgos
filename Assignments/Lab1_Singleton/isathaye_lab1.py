@@ -25,14 +25,14 @@ def find_unique(L, min, max):
         return L[mid]
     if mid % 2 == 0: # if even number of elements 
         if L[mid] == L[mid - 1]: # mid element same as previous
-            return find_unique(L, min, mid - 2) # 
+            return find_unique(L, min, mid - 2) # in the left half
         else: # mid element same as next
-            return find_unique(L, mid + 2, max) # if not, then the unique element is in the right half
+            return find_unique(L, mid + 2, max) # in the right half
     else: # if odd number of elements from 
         if L[mid] == L[mid - 1]: 
-            return find_unique(L, mid + 1, max) # duplicate to the left look right
+            return find_unique(L, mid + 1, max) # duplicate to the left then look right
         else:
-            return find_unique(L, min, mid - 1) # duplicate to the right look left
+            return find_unique(L, min, mid - 1) # duplicate to the right then look left
 
 if __name__ == "__main__":
     filename = sys.argv[1]
