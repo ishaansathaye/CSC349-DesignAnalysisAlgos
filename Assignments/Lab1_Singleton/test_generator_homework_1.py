@@ -10,7 +10,7 @@ from os import path
 # Parameters for the generator
 min = -100
 max = 100
-n = 50
+n = 2
 
 # Generate a random list of distinct numbers	
 numbers = random.sample(range(min,max),n)
@@ -28,7 +28,7 @@ L.sort()
 # Write sorted list to file.
 # File will be named "nique{n}", where n is the singleton entry
 # If this file name already exists, the current datetime will be appended
-name = "unique{}".format(unique)
+name = "./Assignments/Lab1_Singleton/test/unique{}".format(unique)
 if path.exists(name):
 	now = datetime.datetime.now()
 	name+=" {}".format(now)

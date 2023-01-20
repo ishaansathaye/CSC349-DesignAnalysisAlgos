@@ -2,4 +2,4 @@
 
 # Labs
 
-- [Lab 1](
+- [Lab 1](./Assignments/Lab1_Singleton/)
