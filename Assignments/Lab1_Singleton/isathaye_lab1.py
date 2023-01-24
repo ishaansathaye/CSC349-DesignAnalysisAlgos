@@ -8,11 +8,13 @@
 
 import sys
 
+
 def read_file(filename):
     f = open(filename, "r")
     L = [int(x) for x in f]
     f.close()
     return L
+
 
 def find_unique(L, min, max):
     # Base case
@@ -23,16 +25,19 @@ def find_unique(L, min, max):
     # Check if the middle element is unique
     if L[mid] != L[mid - 1] and L[mid] != L[mid + 1]:
         return L[mid]
-    if mid % 2 == 0: # if even number of elements 
-        if L[mid] == L[mid - 1]: # mid element same as previous
-            return find_unique(L, min, mid - 2) # in the left half
-        else: # mid element same as next
-            return find_unique(L, mid + 2, max) # in the right half
-    else: # if odd number of elements from 
-        if L[mid] == L[mid - 1]: 
-            return find_unique(L, mid + 1, max) # duplicate to the left then look right
+    if mid % 2 == 0:  # if even number of elements
+        if L[mid] == L[mid - 1]:  # mid element same as previous
+            return find_unique(L, min, mid - 2)  # in the left half
+        else:  # mid element same as next
+            return find_unique(L, mid + 2, max)  # in the right half
+    else:  # if odd number of elements from
+        if L[mid] == L[mid - 1]:
+            # duplicate to the left then look right
+            return find_unique(L, mid + 1, max)
         else:
-            return find_unique(L, min, mid - 1) # duplicate to the right then look left
+            # duplicate to the right then look left
+            return find_unique(L, min, mid - 1)
+
 
 if __name__ == "__main__":
     filename = sys.argv[1]
