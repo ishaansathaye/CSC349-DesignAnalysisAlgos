@@ -3,3 +3,4 @@
 # Labs
 
 - [Lab 1](./Assignments/Lab1_Singleton/)
+    - [Project Details](https://canvas.calpoly.edu/courses/95587/assignments/687407)
