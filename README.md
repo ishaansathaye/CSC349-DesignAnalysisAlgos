@@ -3,4 +3,6 @@
 # Labs
 
 - [Lab 1](./Assignments/Lab1_Singleton/)
-    - [Project Details](https://canvas.calpoly.edu/courses/95587/assignments/687407)
+  - [Lab Details](https://canvas.calpoly.edu/courses/95587/assignments/687407)
+- [Lab 2](./Assignments/Lab2_StronglyConnectedComponents/)
+  - [Lab Details](https://canvas.calpoly.edu/courses/95587/assignments/694524)
