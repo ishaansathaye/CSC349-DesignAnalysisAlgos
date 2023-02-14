@@ -36,9 +36,6 @@ def strong_connectivity(G):
         if v.firstVisit == False:
             visit(G, v, stack)
 
-    for v in stack:
-        print(v.name, end=" ")
-
     components = []
 
     while stack:
