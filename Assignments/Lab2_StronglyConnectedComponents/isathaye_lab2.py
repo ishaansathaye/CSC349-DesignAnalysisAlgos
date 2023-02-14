@@ -1,7 +1,3 @@
-# A template for lab 2 - strong connectivity in graphs - for CSC 349 at Cal Poly
-# Reads a file with a list of edges and outputs it to the screen
-# Credit: Rodrigo Canaan
-
 import sys
 import math
 
@@ -14,33 +10,43 @@ class node:
         self.previsit = previsit
         self.postvisit = postvisit
         self.component = component
+        self.visited = False
 
 
-def dfs(G, node, components):
-    # Implement depth first search
-    # Input: G, a list of nodes
-    # Input: node, a node in G
-    # Input: components, a list of lists of nodes, where each list of nodes is a strongly connected component
-    # Output: None
-    # Side effect: node.previsit, node.postvisit, and node.component are updated
-    # Side effect: components is updated
-    node.previsit = 0
-    node.component = node
-    components.append([node.name])
-    for out_edge in node.out_edges:
-        if G[out_edge].previsit == -1:
-            dfs(G, G[out_edge], components)
-    node.postvisit = 0
+def dfs_1(G, v, clock):
+    if v.previsit == -1:
+        v.previsit = clock
+        clock += 1
+        for w in v.out_edges:
+            clock = dfs_1(G, G[w], clock)
+        v.postvisit = clock
+        clock += 1
+    return clock
+
+
+def assign(G, v, components):
+    v.visited = True
+    components.append(v.name)
+    for w in v.in_edges:
+        if G[w].visited == False:
+            assign(G, G[w], components)
+    return components
 
 
 def strong_connectivity(G):
-    # Implement Kosaraju's algorithm for finding strongly connected components in a graph
-    # Input: G, a list of nodes
-    # Output: a list of lists of nodes, where each list of nodes is a strongly connected component
+    for v in G:
+        if v.previsit == -1:
+            dfs_1(G, v, 0)
+
+    sorted_list = []
+    for v in G:
+        sorted_list.append(v)
+    sorted_list.sort(key=lambda x: x.postvisit, reverse=True)
+
     components = []
-    for node in G:
-        if node.previsit == -1:
-            dfs(G, node, components)
+    for v in sorted_list:
+        if v.visited == False:
+            components.append(assign(G, v, []))
     sort_component_list(components)
     return components
 
@@ -68,8 +74,8 @@ def read_file(filename):
 
 
 def main():
-    # filename = sys.argv[1]
-    filename = "Assignments/Lab2_StronglyConnectedComponents/lab2_example1"
+    filename = sys.argv[1]
+    # filename = "Assignments/Lab2_StronglyConnectedComponents/lab2_example1"
     G = read_file(filename)
     components = strong_connectivity(G)
     print(components)
