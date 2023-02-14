@@ -1,5 +1,4 @@
 import sys
-import math
 
 
 class node:
@@ -13,12 +12,12 @@ class node:
         self.visited = False
 
 
-def dfs_1(G, v, clock):
+def visit(G, v, clock):
     if v.previsit == -1:
         v.previsit = clock
         clock += 1
         for w in v.out_edges:
-            clock = dfs_1(G, G[w], clock)
+            clock = visit(G, G[w], clock)
         v.postvisit = clock
         clock += 1
     return clock
@@ -36,12 +35,13 @@ def assign(G, v, components):
 def strong_connectivity(G):
     for v in G:
         if v.previsit == -1:
-            dfs_1(G, v, 0)
+            visit(G, v, 0)
 
     sorted_list = []
     for v in G:
         sorted_list.append(v)
-    sorted_list.sort(key=lambda x: x.postvisit, reverse=True)
+    sorted_list.sort(key=lambda x: x.postvisit,
+                     reverse=True)  # sort by postvisit
 
     components = []
     for v in sorted_list:
@@ -75,7 +75,6 @@ def read_file(filename):
 
 def main():
     filename = sys.argv[1]
-    # filename = "Assignments/Lab2_StronglyConnectedComponents/lab2_example1"
     G = read_file(filename)
     components = strong_connectivity(G)
     print(components)
