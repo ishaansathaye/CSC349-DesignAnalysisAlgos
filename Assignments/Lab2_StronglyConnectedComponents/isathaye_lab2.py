@@ -9,43 +9,41 @@ class node:
         self.previsit = previsit
         self.postvisit = postvisit
         self.component = component
-        self.visited = False
+        self.firstVisit = False
+        self.secVisit = False
 
 
-def visit(G, v, clock):
-    if v.previsit == -1:
-        v.previsit = clock
-        clock += 1
-        for w in v.out_edges:
-            clock = visit(G, G[w], clock)
-        v.postvisit = clock
-        clock += 1
-    return clock
+def visit(G, v, stack):
+    v.firstVisit = True
+    for w in v.out_edges:
+        if G[w].firstVisit == False:
+            visit(G, G[w], stack)
+    stack.append(v)
 
 
 def assign(G, v, components):
-    v.visited = True
+    v.secVisit = True
     components.append(v.name)
     for w in v.in_edges:
-        if G[w].visited == False:
+        if G[w].secVisit == False:
             assign(G, G[w], components)
     return components
 
 
 def strong_connectivity(G):
+    stack = []
     for v in G:
-        if v.previsit == -1:
-            visit(G, v, 0)
+        if v.firstVisit == False:
+            visit(G, v, stack)
 
-    sorted_list = []
-    for v in G:
-        sorted_list.append(v)
-    sorted_list.sort(key=lambda x: x.postvisit,
-                     reverse=True)  # sort by postvisit
+    for v in stack:
+        print(v.name, end=" ")
 
     components = []
-    for v in sorted_list:
-        if v.visited == False:
+
+    while stack:
+        v = stack.pop()
+        if v.secVisit == False:
             components.append(assign(G, v, []))
     sort_component_list(components)
     return components
