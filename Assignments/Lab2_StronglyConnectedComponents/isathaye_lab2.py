@@ -2,7 +2,8 @@ import sys
 
 
 class node:
-    def __init__(self, name, out_edges, in_edges, previsit, postvisit, component):
+    def __init__(self, name, out_edges, in_edges, previsit,
+                 postvisit, component):
         self.name = name
         self.out_edges = out_edges
         self.in_edges = in_edges
@@ -16,7 +17,7 @@ class node:
 def visit(G, v, stack):
     v.firstVisit = True
     for w in v.out_edges:
-        if G[w].firstVisit == False:
+        if not G[w].firstVisit:
             visit(G, G[w], stack)
     stack.append(v)
 
@@ -25,7 +26,7 @@ def assign(G, v, components):
     v.secVisit = True
     components.append(v.name)
     for w in v.in_edges:
-        if G[w].secVisit == False:
+        if not G[w].secVisit:
             assign(G, G[w], components)
     return components
 
@@ -33,14 +34,14 @@ def assign(G, v, components):
 def strong_connectivity(G):
     stack = []
     for v in G:
-        if v.firstVisit == False:
+        if not v.firstVisit:
             visit(G, v, stack)
 
     components = []
 
     while stack:
         v = stack.pop()
-        if v.secVisit == False:
+        if not v.secVisit:
             components.append(assign(G, v, []))
     sort_component_list(components)
     return components
