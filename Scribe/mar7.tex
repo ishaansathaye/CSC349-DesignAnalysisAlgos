@@ -1,0 +1,263 @@
+% This is the LaTeX template file for homework for CSC549, Advanced Algorithm Design and Analysis.  When preparing homework solutions for this class, please use this template.
+%
+% This LaTeX template was created by the UC Berkeley EECS dept.
+%
+%
+
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% add packages if you need them here:
+%
+
+\usepackage{amsmath,amsfonts,graphicx}
+\usepackage{algorithm,caption}
+\usepackage[noend]{algpseudocode}
+%
+% the following macro is used to generate the header.
+%
+\newcommand{\homework}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf CSC 349-07: Design and Analysis of Algorithms
+		\hfill Winter 2023} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill P vs NP:  March 7, 2023 \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Instructor: Rodrigo Canaan \hfill Scribe: Ishaan Sathaye} }
+      \vspace{2mm}}
+   }
+   \end{center}
+}
+
+
+% use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+% **** you may define additional macros here:
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+\begin{document}
+\homework
+
+
+% **** your solution goes here:
+
+% Some general latex examples and examples making use of the macros follow.  
+
+\section{Announcements}
+{\em Make sure to write all announcements here.}
+\begin{itemize}
+    \item Dr. Migler reminded everyone to be healthy and kind and to sign up for a scribe day.
+    \item Second bullet point 
+    \item Third bullet point 
+\end{itemize}
+
+\section{Searching} 
+
+\subsection{Problem Statement}
+
+\noindent\fbox{
+\parbox{\textwidth}{
+{\bf Search}
+
+    {\bf Input:} A list of numbers, sorted in increasing order,
+    $A = [a_0,a_1,a_2,a_3,\dots a_{n-1}]$ and a number $x$.
+
+    {\bf Goal:} Return a position of $x$ in $A$ if $x\in A$ or return a statement that $x$ is not in the list.
+    
+}
+}
+
+\subsection{Pseudocode for {\sc BinarySearch} }
+\begin{algorithm}[H]
+\caption*{{\sc BinarySearch($A$, $x$, min, max)}}\label{alg:binary_search}
+\begin{algorithmic}[1]
+
+\INPUT An array of $n$ sorted numbers $A$, number $x$, integers min,
+and max. 
+(Initially $min = 0$ and $max = n-1$)
+
+\OUTPUT A position of $x$ in $A$ if $x\in A$, or $-1$ if $x\notin A$.
+
+\If {max < min}
+
+\Return $-1$
+
+
+\Else
+
+
+\If {$x<A[\lfloor (max + min)/2 \rfloor ]$}
+
+
+\Return BinarySearch($A, x$, min,$\lfloor (max + min)/2 \rfloor  -1$) 
+
+
+\ElsIf {$x>A[\lfloor (max + min)/2 \rfloor ]$}
+
+
+\Return BinarySearch($A, x$ ,$\lfloor (max + min)/2 \rfloor  +1, max$) 
+
+
+\Else
+ 
+
+\Return $\lfloor (max + min)/2 \rfloor $
+\EndIf
+
+
+\EndIf
+
+\end{algorithmic}
+\end{algorithm} 
+
+\subsection{Correctness of {\sc BinarySearch}}
+Notice that in the output statement for {\sc BinarySearch} we said
+that {\bf A} position of $x$ is returned because we don't know which
+position of $x$ will be returned (if $x$ occurs multiple times). For
+example if we call  {\sc BinarySearch($\{2, 2, 3, 5, 5, 7\}$, $5$, min,
+  max)} then the second occurrence of 5 is returned. 
+
+Also notice that for {\sc BinarySearch($A$, $x$, min, max)} we aren't
+``throwing away'' half of the list at every iteration. Rather, we are
+reducing the size of the interval under consideration ($(min,max)$).
+
+For the base case: if $max < min$ then the interval that we are
+considering is empty, thus $x$ couldn't possibly be in that interval.
+
+Again, we must prove that {\sc BinarySearch($A$, $x$, min, max)} is correct.
+We will prove the following lemmas:
+\begin{lemma}\label{proof:binary_search_firsttry}
+  If $x\in A$, then {\sc BinarySearch($A$, $x$, min, max)} returns a
+  position of $x$ in $A$.
+\end{lemma}
+
+\begin{lemma}\label{proof:binary_search_not_in}
+  If $x\notin A$, then {\sc BinarySearch($A$, $x$, min, max)} returns $-1$.
+\end{lemma}
+
+We will prove Lemma~\ref{proof:binary_search_not_in} by contradiction:
+
+\begin{proof}
+  Suppose $x\notin A$, further suppose for a contradiction that {\sc BinarySearch($A$,
+    $x$, min, max)} returns something other than $-1$. Note that the
+  only time that {\sc BinarySearch($A$,
+    $x$, min, max)} returns something other than $-1$ is in line 5 of
+  the algorithm. The only way to enter line 5 of the algorithm is if
+  $x = A[\lfloor (max + min)/2\rfloor]$. However, if $x\notin A$ then
+  this will never occur. We have reached our contradiction. Of course
+  we should also point out that our algorithm terminates... {\em Why?}
+\end{proof}
+
+Now for the proof of Lemma~\ref{proof:binary_search_firsttry}. Divide
+and conquer is a recursive technique and therefore induction is
+usually the proof technique for the proofs of correctness for these
+types of algorithms. We will restate our lemma to make it more
+suitable for a proof by induction. Note that we are going to use
+induction over the size of the interval that we are considering
+($(min,max)$).
+
+\begin{lemma}
+  If $x\in A(min,max)$ and $max - min = n$, then {\sc
+    BinarySearch($A$, $x$, min, max)} returns a position of $x$ in
+  $A$.
+\end{lemma}
+
+\begin{proof}
+We proceed by induction of the size of the interval under
+consideration.
+
+  {\bf Base Case:} Suppose that $x\in A(min,max)$ and $max - min =
+  0$. Then $min = max = \lfloor (max + min)/2\rfloor$. Also, since
+  $x\in A(min,max)$, it must be that
+  $x = A[min] = A[max] = A[\lfloor (max + min)/2\rfloor]$. So line 5
+of {\sc BinarySearch($A$, $x$, min, max)} returns
+$min = max = \lfloor (max + min)/2\rfloor$.
+
+{\bf (Strong) Inductive Hypothesis: }If $x\in A(min,max)$ and
+$max - min \leq k$, then {\sc BinarySearch($A$, $x$, min, max)}
+returns a position of $x$ in $A$.
+
+{\bf Inductive Step: }Suppose $x\in A(min,max)$ and $max - min = k +
+1$. There are three possibilities:
+\begin{enumerate}
+\item $x < A[\lfloor (max + min)/2\rfloor]$
+\item $x > A[\lfloor (max + min)/2\rfloor]$
+\item $x = A[\lfloor (max + min)/2\rfloor]$
+\end{enumerate}
+
+Case 1: Because the list is sorted and $x$ is in the interval 
+$A[(min,max)]$, it must be that $x$ is in the first half of the
+interval, $A[(min, \lfloor (max + min)/2\rfloor - 1)]$.
+
+What does {\sc BinarySearch($A$, $x$, min, max)} do in this case? 
+
+In this case, in line 3, {\sc BinarySearch($A$, $x$, min, max)}
+returns {\sc BinarySearch($A$, $x$, min, $\lfloor (max + min)/2\rfloor
+  - 1)$}.
+
+Note that $x \in A[(min, \lfloor (max + min)/2\rfloor - 1)]$ and
+$(\lfloor (max + min)/2\rfloor - 1) - min \leq k$, so our inductive
+hypothesis is met and {\sc BinarySearch($A$, $x$, min, max)}
+returns a position of $x$ in $A$.
+
+Case 2: Symmetric to Case 1: because the list is sorted and $x$ is
+in the interval from $A[(min,max)]$, it must be that $x$ is in the
+second half of the interval,
+$A[( \lfloor (max + min)/2\rfloor + 1, max)]$.
+
+What does {\sc BinarySearch($A$, $x$, min, max)} do in this case? 
+
+In this case, in line 4, {\sc BinarySearch($A$, $x$, min, max)}
+returns {\sc BinarySearch($A$, $x$, $\lfloor (max + min)/2\rfloor
+  + 1, max)$}.
+
+Note that $x \in A[(\lfloor (max + min)/2\rfloor + 1, max)]$ and
+$max - (\lfloor (max + min)/2\rfloor + 1) \leq k$, so our inductive
+hypothesis is met and {\sc BinarySearch($A$, $x$, min, max)}
+returns a position of $x$ in $A$.
+
+Case 3: If $x = A[\lfloor (max + min)/2\rfloor]$, then line 5 of {\sc
+  BinarySearch($A$, $x$, min, max)} correctly returns $\lfloor (max +
+min)/2\rfloor$.
+
+Therefore by the principle of mathematical induction, we have the result.
+
+\end{proof}
+
+Notice that we used {\em strong induction} in the above proof. This is
+because the size of the problem is being reduced by about $\frac{n}{2}$
+at each stage, so having information about a problem of size $n-1$
+(which you would get from weak or regular induction) would not be
+useful.
+
+We have proven that {\sc BinarySearch($A$, $x$, min, max)} is
+correct. The next step is to evaluate the running time. 
+
+
+\end{document}
