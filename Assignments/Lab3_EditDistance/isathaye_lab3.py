@@ -17,17 +17,9 @@ def calc_edit_distance(a, b):
                 matrix[i][j] = matrix[i - 1][j - 1]
             else:
                 matrix[i][j] = min(matrix[i - 1][j - 1], matrix[i - 1][j], matrix[i][j - 1]) + 1
-
-    # Return the edit distance
-    # return matrix[len(a)][len(b)]
-    return matrix
+    return matrix[len(a)][len(b)]
 
 if __name__ == "__main__":
-    # a = sys.argv[1]
-    # b = sys.argv[2]
-    # a = "snowy"
-    a = "exponential"
-    b = "polynomial"
-    matrix = calc_edit_distance(a, b)
-    for row in matrix:
-        print(row)
+    a = sys.argv[1]
+    b = sys.argv[2]
+    print(calc_edit_distance(a, b))

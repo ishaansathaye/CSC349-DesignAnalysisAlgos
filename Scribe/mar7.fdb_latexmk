@@ -1,6 +1,6 @@
 # Fdb version 3
-["pdflatex"] 1678228298 "/Users/ishaansathaye/Git/CSC349-DesignAnalysisAlgos/Scribe/mar7.tex" "mar7.pdf" "mar7" 1678228298
-  "/Users/ishaansathaye/Git/CSC349-DesignAnalysisAlgos/Scribe/mar7.tex" 1678228297 8497 fe1af893dae6b6a63ce250c52b0869b8 ""
+["pdflatex"] 1678229070 "/Users/ishaansathaye/Git/CSC349-DesignAnalysisAlgos/Scribe/mar7.tex" "mar7.pdf" "mar7" 1678229070
+  "/Users/ishaansathaye/Git/CSC349-DesignAnalysisAlgos/Scribe/mar7.tex" 1678229069 8497 fe1af893dae6b6a63ce250c52b0869b8 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
@@ -70,8 +70,8 @@
   "/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1647878959 4410336 7d30a02e9fa9a16d7d1f8d037ba69641 ""
   "/usr/local/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt" 1670225086 2826451 5641cab485f168d0ada1fb557842c79c ""
   "/usr/local/texlive/2022/texmf.cnf" 1647878952 577 209b46be99c9075fd74d4c0369380e8c ""
-  "mar7.aux" 1678228298 841 3ca0850409463aa2351052b217f5946e "pdflatex"
-  "mar7.tex" 1678228297 8497 fe1af893dae6b6a63ce250c52b0869b8 ""
+  "mar7.aux" 1678229070 841 3ca0850409463aa2351052b217f5946e "pdflatex"
+  "mar7.tex" 1678229069 8497 fe1af893dae6b6a63ce250c52b0869b8 ""
   (generated)
   "mar7.aux"
   "mar7.log"
