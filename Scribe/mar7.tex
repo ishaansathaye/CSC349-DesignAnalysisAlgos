@@ -21,6 +21,7 @@
 \usepackage{amsmath,amsfonts,graphicx}
 \usepackage{algorithm,caption}
 \usepackage[noend]{algpseudocode}
+\usepackage{tikz}
 %
 % the following macro is used to generate the header.
 %
@@ -52,6 +53,7 @@
 \newtheorem{claim}[theorem]{Claim}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{definition}[theorem]{Definition}
+\newtheorem{note}[theorem]{Note}
 \newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
 
 % **** you may define additional macros here:
@@ -64,200 +66,224 @@
 \begin{document}
 \homework
 
-
-% **** your solution goes here:
-
-% Some general latex examples and examples making use of the macros follow.  
-
 \section{Announcements}
-{\em Make sure to write all announcements here.}
+
 \begin{itemize}
-    \item Dr. Migler reminded everyone to be healthy and kind and to sign up for a scribe day.
-    \item Second bullet point 
-    \item Third bullet point 
+    \item No new programming assignment
+    \item Quiz 3 and other quizzes missed retake this Thursday (March 9, 2023)
+    \item Look out for an activity next week
 \end{itemize}
 
-\section{Searching} 
+\section{Complexity}
 
-\subsection{Problem Statement}
+\subsection{Big O}
+
+{\em Big O time complexity does not care about multiplicative constants.} For example, consider
+a matrix multiplication algorithm. Reading a contiguous chunk of memory would be faster 
+than reading columns in another matrix. However, Big O does not care about this.
+
+\subsection{Polynomial vs. Non-Polynomial}
+Time complexities such as $O(n^2)$, $O(n^3)$, $O(2^n)$, $O(n!)$, and $O(n^n)$ are all polynomial time complexities
+and bounded by a polynomial.
+
+An example of a non-polynomial time complexity would be $O(2^{n})$, which is
+significantly worse than something like $O(n^{100})$.
+
+\section{NP}
+
+\subsection[Decision Problems] {Decision Problems\footnote{We will be focusing more on these types of NP Problems}}
+
+\begin{definition}
+A problem for which any proposed solution can be quickly checked for correctness.
+\end{definition}
+
+Examples:
+\begin{itemize}
+    \item \textbf{Finding x}: Is there an x that satisfies $C$ some constraint?
+    \item \textbf{Path Finding}: Is there a path from $u$ to $v$ in a graph $G$?
+    \item \textbf{Knapsack}: Is there a knapsack that has a value of 100 while not going over the weight of 15?
+    \item \textbf{Prime Number}: Does the number $n$ have any factors $f$ with $f$ $\leq$ $n$ and $f$ $\neq$ 1?
+    \item \textbf{Sudoku}: Is there a solution to a given Sudoku board?
+\end{itemize}
+
+\subsubsection{Path Finding Algorithm}
+% Pseudo-code for Solve(P)
+\begin{algorithm}[H]
+\caption*{{\sc findpath()}}
+\begin{enumerate}
+    \item Check Edges $\to$ {\textbf{polynomial}}
+    \item Solve Subproblems $\to$ {\textbf{polynomial}} $\to$ O($n+m$)
+\end{enumerate}
+\end{algorithm}
+
+\subsubsection{Sudoku Algorithm}
+
+\begin{note}
+    An O($n^3$) algorithm, which makes it a polynomial time algorithm.
+\end{note}
 
 \noindent\fbox{
 \parbox{\textwidth}{
-{\bf Search}
-
-    {\bf Input:} A list of numbers, sorted in increasing order,
-    $A = [a_0,a_1,a_2,a_3,\dots a_{n-1}]$ and a number $x$.
-
-    {\bf Goal:} Return a position of $x$ in $A$ if $x\in A$ or return a statement that $x$ is not in the list.
+{\bf CheckSudoku and SolveSudoku}
     
+    {\bf Input:} B = a Sudoku board, S = a set of Sudoku boards which are solutions to B
+    
+    {\bf Goal:} Is there a solution to B?
 }
 }
-
-\subsection{Pseudocode for {\sc BinarySearch} }
 \begin{algorithm}[H]
-\caption*{{\sc BinarySearch($A$, $x$, min, max)}}\label{alg:binary_search}
-\begin{algorithmic}[1]
-
-\INPUT An array of $n$ sorted numbers $A$, number $x$, integers min,
-and max. 
-(Initially $min = 0$ and $max = n-1$)
-
-\OUTPUT A position of $x$ in $A$ if $x\in A$, or $-1$ if $x\notin A$.
-
-\If {max < min}
-
-\Return $-1$
-
-
-\Else
-
-
-\If {$x<A[\lfloor (max + min)/2 \rfloor ]$}
-
-
-\Return BinarySearch($A, x$, min,$\lfloor (max + min)/2 \rfloor  -1$) 
-
-
-\ElsIf {$x>A[\lfloor (max + min)/2 \rfloor ]$}
-
-
-\Return BinarySearch($A, x$ ,$\lfloor (max + min)/2 \rfloor  +1, max$) 
-
-
-\Else
- 
-
-\Return $\lfloor (max + min)/2 \rfloor $
-\EndIf
-
-
-\EndIf
-
-\end{algorithmic}
+\caption*{{\sc checksudoku(B, S)}}
+\begin{enumerate}
+    \item For each cell $\to$ O($n^2$) cells
+    \begin{enumerate}
+        \item Check row $\to$ O($n$)
+        \item Check column $\to$ O($n$)
+        \item Check 3x3 grid $\to$ O($n$)
+    \end{enumerate}
+\end{enumerate}
 \end{algorithm} 
 
-\subsection{Correctness of {\sc BinarySearch}}
-Notice that in the output statement for {\sc BinarySearch} we said
-that {\bf A} position of $x$ is returned because we don't know which
-position of $x$ will be returned (if $x$ occurs multiple times). For
-example if we call  {\sc BinarySearch($\{2, 2, 3, 5, 5, 7\}$, $5$, min,
-  max)} then the second occurrence of 5 is returned. 
+Checking edges is polynomial time.
 
-Also notice that for {\sc BinarySearch($A$, $x$, min, max)} we aren't
-``throwing away'' half of the list at every iteration. Rather, we are
-reducing the size of the interval under consideration ($(min,max)$).
-
-For the base case: if $max < min$ then the interval that we are
-considering is empty, thus $x$ couldn't possibly be in that interval.
-
-Again, we must prove that {\sc BinarySearch($A$, $x$, min, max)} is correct.
-We will prove the following lemmas:
-\begin{lemma}\label{proof:binary_search_firsttry}
-  If $x\in A$, then {\sc BinarySearch($A$, $x$, min, max)} returns a
-  position of $x$ in $A$.
-\end{lemma}
-
-\begin{lemma}\label{proof:binary_search_not_in}
-  If $x\notin A$, then {\sc BinarySearch($A$, $x$, min, max)} returns $-1$.
-\end{lemma}
-
-We will prove Lemma~\ref{proof:binary_search_not_in} by contradiction:
-
-\begin{proof}
-  Suppose $x\notin A$, further suppose for a contradiction that {\sc BinarySearch($A$,
-    $x$, min, max)} returns something other than $-1$. Note that the
-  only time that {\sc BinarySearch($A$,
-    $x$, min, max)} returns something other than $-1$ is in line 5 of
-  the algorithm. The only way to enter line 5 of the algorithm is if
-  $x = A[\lfloor (max + min)/2\rfloor]$. However, if $x\notin A$ then
-  this will never occur. We have reached our contradiction. Of course
-  we should also point out that our algorithm terminates... {\em Why?}
-\end{proof}
-
-Now for the proof of Lemma~\ref{proof:binary_search_firsttry}. Divide
-and conquer is a recursive technique and therefore induction is
-usually the proof technique for the proofs of correctness for these
-types of algorithms. We will restate our lemma to make it more
-suitable for a proof by induction. Note that we are going to use
-induction over the size of the interval that we are considering
-($(min,max)$).
-
-\begin{lemma}
-  If $x\in A(min,max)$ and $max - min = n$, then {\sc
-    BinarySearch($A$, $x$, min, max)} returns a position of $x$ in
-  $A$.
-\end{lemma}
-
-\begin{proof}
-We proceed by induction of the size of the interval under
-consideration.
-
-  {\bf Base Case:} Suppose that $x\in A(min,max)$ and $max - min =
-  0$. Then $min = max = \lfloor (max + min)/2\rfloor$. Also, since
-  $x\in A(min,max)$, it must be that
-  $x = A[min] = A[max] = A[\lfloor (max + min)/2\rfloor]$. So line 5
-of {\sc BinarySearch($A$, $x$, min, max)} returns
-$min = max = \lfloor (max + min)/2\rfloor$.
-
-{\bf (Strong) Inductive Hypothesis: }If $x\in A(min,max)$ and
-$max - min \leq k$, then {\sc BinarySearch($A$, $x$, min, max)}
-returns a position of $x$ in $A$.
-
-{\bf Inductive Step: }Suppose $x\in A(min,max)$ and $max - min = k +
-1$. There are three possibilities:
+\begin{algorithm}[H]
+\caption*{{\sc solvesudoku(B)}}
 \begin{enumerate}
-\item $x < A[\lfloor (max + min)/2\rfloor]$
-\item $x > A[\lfloor (max + min)/2\rfloor]$
-\item $x = A[\lfloor (max + min)/2\rfloor]$
+    \item Generate all possible solutions of B
+    \item Check each solution
 \end{enumerate}
+\end{algorithm} 
 
-Case 1: Because the list is sorted and $x$ is in the interval 
-$A[(min,max)]$, it must be that $x$ is in the first half of the
-interval, $A[(min, \lfloor (max + min)/2\rfloor - 1)]$.
+Solving would be O($n^n$) making it exponential not polynomial.
 
-What does {\sc BinarySearch($A$, $x$, min, max)} do in this case? 
+\subsection{Search Problems}
 
-In this case, in line 3, {\sc BinarySearch($A$, $x$, min, max)}
-returns {\sc BinarySearch($A$, $x$, min, $\lfloor (max + min)/2\rfloor
-  - 1)$}.
+\begin{definition}
+A problem for which a solution is found by searching through a space of possible solutions. Sits 
+in between decision problems and optimization problems.
+\end{definition}
 
-Note that $x \in A[(min, \lfloor (max + min)/2\rfloor - 1)]$ and
-$(\lfloor (max + min)/2\rfloor - 1) - min \leq k$, so our inductive
-hypothesis is met and {\sc BinarySearch($A$, $x$, min, max)}
-returns a position of $x$ in $A$.
+Examples:
+\begin{itemize}
+    \item \textbf{Finding x}: Find an $x$ subject to some constraint $C$.
+    \item \textbf{Path Finding}: Find a path from $u$ to $v$ in a graph $G$.
+    \item \textbf{Knapsack}: Find a knapsack that has a value of 100 while not going over the weight of 15.
+    \item \textbf{Prime Number}: Find a factor or all factors $f$ with $f$ $\leq$ $n$ and $f$ $\neq$ 1.
+    \item \textbf{Sudoku}: Find a solution to a given Sudoku board.
+\end{itemize}
 
-Case 2: Symmetric to Case 1: because the list is sorted and $x$ is
-in the interval from $A[(min,max)]$, it must be that $x$ is in the
-second half of the interval,
-$A[( \lfloor (max + min)/2\rfloor + 1, max)]$.
+\subsection{Optimization Problems}
 
-What does {\sc BinarySearch($A$, $x$, min, max)} do in this case? 
+\begin{definition}
+    Harder problem in general since a solution to this problem would be a solution to a {\em Decision} problem.
+\end{definition}
 
-In this case, in line 4, {\sc BinarySearch($A$, $x$, min, max)}
-returns {\sc BinarySearch($A$, $x$, $\lfloor (max + min)/2\rfloor
-  + 1, max)$}.
+Examples:
+\begin{itemize}
+    \item \textbf{Finding x}: Find an $x^*$ that minimizes/maximizes $f(x)$ subject to some constraint $C$.
+    \item \textbf{Path Finding}: Find a minimum length path from $u$ to $v$ in a graph $G$.
+    \item \textbf{Knapsack}: Find a knapsack that $max(\sum_{i=1}^{n}v_i)$ subject to $\sum_{i=1}^{n}v_i \leq w$.
+    \item \textbf{Maximum Increasing Subsequence}: Find a subsequence of a given sequence that is increasing and has the 
+    maximum length.
+\end{itemize}
 
-Note that $x \in A[(\lfloor (max + min)/2\rfloor + 1, max)]$ and
-$max - (\lfloor (max + min)/2\rfloor + 1) \leq k$, so our inductive
-hypothesis is met and {\sc BinarySearch($A$, $x$, min, max)}
-returns a position of $x$ in $A$.
+\subsection{P vs NP}
 
-Case 3: If $x = A[\lfloor (max + min)/2\rfloor]$, then line 5 of {\sc
-  BinarySearch($A$, $x$, min, max)} correctly returns $\lfloor (max +
-min)/2\rfloor$.
+\textbf{P} stands for \textbf{polynomial} and \textbf{NP} stands for \textbf{non-deterministic 
+polynomial\footnote[2]{NP problems would be be solvable in polynomial if we had a deterministic machine.}}.
 
-Therefore by the principle of mathematical induction, we have the result.
 
-\end{proof}
+Class of \textbf{NP} Problems
+\begin{itemize}
+    \item {\em Some decision problems that can be {\sc checked} in polynomial time.}
+    \item Examples: Knapsack (convert from an optimization problem to a decision problem), Independent Set,
+    Traveling Salesperson Problem, Minimum Spanning Tree, Matching, etc.
+\end{itemize}
 
-Notice that we used {\em strong induction} in the above proof. This is
-because the size of the problem is being reduced by about $\frac{n}{2}$
-at each stage, so having information about a problem of size $n-1$
-(which you would get from weak or regular induction) would not be
-useful.
+Class of \textbf{P} Problems
+\begin{itemize}
+    \item {\em Some decision problems that can be {\sc solved} in polynomial time.}
+    \item Examples: Path Finding, Minimum Spanning Tree, Longest Increasing Subsequence, 
+    Independent Set on Trees, Bipartite Matching, etc.
+\end{itemize}
 
-We have proven that {\sc BinarySearch($A$, $x$, min, max)} is
-correct. The next step is to evaluate the running time. 
+\subsection{P $=$ NP?}
+Does P = NP? If not, then P $\subseteq$ NP, essentially P $\neq$ NP. But does P = NP? We don't know. 
+We can't prove or disprove it. This leads to the mathematical puzzle:
 
+% Venn Diagram
+\begin{center}
+\begin{tikzpicture}
+    % Draw left circle with label NP
+    \draw (0,0) circle (2cm);
+    \node at (0,-1.5) {NP};
+    % Draw inner circle with label P
+    \draw (0,0) circle (1cm);
+    \node at (0,0) {P};
+    % Draw right circle with label P = NP
+    \draw (5,0) circle (2cm);
+    \node at (5,0) {P = NP};
+    \node at (2.5,0) {\textbf{or}};
+    \end{tikzpicture}
+\end{center}
+
+% Pseudo-code for Solve(P)
+\begin{algorithm}[H]
+\caption*{{\sc Solve($P$)}}
+\begin{enumerate}
+    \item Generate all potential solutions of $P$.
+    \item Check each solution to see if it is correct.
+\end{enumerate}
+\end{algorithm} 
+
+\section{NP-Complete}
+
+\begin{definition}[NP-Complete]
+A problem $X$ is NP-complete if:
+\begin{enumerate}
+    \item $X$ is in $NP$.
+    \item Every problem in NP is reducible to $X$ in polynomial time.
+\end{enumerate}
+\end{definition}
+
+\begin{note}
+A problem satisfying condition 2 is $NP$-hard, whether or not it satisfies condition 2.
+\end{note}
+
+
+\section{Reductions}
+
+\begin{definition}
+A reduction from a decision problem A to a decision problem B (A $\to$ B) is a 
+polynomial time algorithm, $f$:
+\begin{itemize}
+    \item That transforms an instance, I, of A into an instance, $f(I)$, of B.
+\end{itemize}
+Together with another polynomial time algorithm, $h$:
+\begin{itemize}
+    \item That maps any solution S of $f(I)$ to a solution $h(S)$ of I.
+\end{itemize}
+If $f(I)$ has no solution then neither does I.
+\end{definition}
+
+\begin{center}
+    \begin{tikzpicture}
+        % draw the first circle on top
+        \draw (0,1.5cm) circle (2cm);
+        % draw the second circle below the first circle
+        \draw (0,-3cm) circle (2cm);
+        % right arrow
+        \draw[<-, bend right] (1.6cm,1cm) to [out=90, in=90] (1.6cm,-3cm);
+        % left arrow
+        \draw[->, bend right] (-1.4cm,1cm) to [out=-90, in=-90] (-1.4cm,-3cm);
+        \node at (0,2.5) {Problem A};
+        \node at (0,-4.25) {Problem B};
+        \node at (0.1,-3) {$I_B$, Solution = $S_B$};
+        \node at (0.1,1) {$I_A$, Solution = $S_A$};
+        \node at (-3,-1) {$f$};
+        \node at (3.1,-1) {$h$};
+        \end{tikzpicture}
+\end{center}
+
+If such a reduction exists, it implies that B is at least as hard as A.
 
 \end{document}
